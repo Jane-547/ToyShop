@@ -2,9 +2,7 @@ package ru.gb.toyshop.model;
 
 import ru.gb.toyshop.model.toy.Toy;
 import ru.gb.toyshop.model.toy.ToyBuilder;
-import ru.gb.toyshop.model.toy.ToyComparator;
 import ru.gb.toyshop.model.toylist.ToyList;
-import ru.gb.toyshop.model.writer.FileHandler;
 import ru.gb.toyshop.model.writer.Writable;
 
 import java.io.*;
@@ -32,14 +30,8 @@ public class Service {
 
     public List<Toy> resultList() throws IOException {
         FileWriter filewriter = new FileWriter("result.txt");
-        List<Toy> result = new ArrayList<>();
+        List<Toy> result = toyList.resultList(toyList);
 
-        Queue<Toy> priorityList = new PriorityQueue<>(new ToyComparator<>());
-        while (toyList.getTotal() >= 1) {
-            priorityList.add(toyList.chooseToy());
-            Toy choice = priorityList.poll();
-            result.add(choice);
-        }
         for (Toy item : result) {
             filewriter.write("ID: " + item.getId() + ", Игрушка: " + item.getName());
             filewriter.write(System.lineSeparator());

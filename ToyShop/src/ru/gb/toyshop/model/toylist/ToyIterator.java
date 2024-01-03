@@ -1,7 +1,5 @@
 package ru.gb.toyshop.model.toylist;
 
-import ru.gb.toyshop.model.toy.Toy;
-
 import java.util.Iterator;
 import java.util.List;
 

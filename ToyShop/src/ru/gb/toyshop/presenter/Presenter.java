@@ -4,7 +4,6 @@ import ru.gb.toyshop.model.Service;
 import ru.gb.toyshop.model.writer.Writable;
 import ru.gb.toyshop.view.View;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 public class Presenter {
@@ -35,8 +34,12 @@ public class Presenter {
         return service.deleteToy(id);
     }
 
-    public void getInfo() {
-        view.printAnswer(service.getInfo());
+    public boolean getInfo() {
+        if (!service.getInfo().isEmpty()){
+            view.printAnswer(service.getInfo());
+            return true;
+        }
+        return false;
     }
 
     public void changeNumberOfToys(int id, int numberOfToys) {

@@ -1,11 +1,10 @@
 package ru.gb.toyshop.model.toylist;
 
 import ru.gb.toyshop.model.toy.Toy;
+import ru.gb.toyshop.model.toy.ToyComparator;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class ToyList<E extends ToyItem> implements Serializable, Iterable<E>{
 
@@ -22,28 +21,23 @@ public class ToyList<E extends ToyItem> implements Serializable, Iterable<E>{
         toyList.add(toy);
     }
 
-    public List<E> makeList() {
-        List<E> result = new ArrayList<>();
-        result.addAll(toyList);
-        return result;
-    }
-
     public List<E> getToyList() {
         return toyList;
     }
 
-    public Toy chooseToy() {
-        int maxFrequency = 0;
-        Toy choice = null;
-        for (E toy: toyList) {
-            if (toy.getFrequency() > maxFrequency) {
-                maxFrequency = toy.getFrequency();
-                choice = (Toy) toy;
-            }
+    public List<Toy> resultList(ToyList toyList) {
+        List<Toy> result = new ArrayList<>();
+        Queue<Toy> priorityList = new PriorityQueue<>(new ToyComparator<>());
+        priorityList.addAll(toyList.getToyList());
+        while (toyList.getTotal() >= 1) {
+            Toy choice = priorityList.peek();
+            result.add(choice);
+            choice.setNumberOfToys(choice.getNumberOfToys() - 1);
+            toyList.setFrequences(toyList.getTotal() - 1);
+            priorityList.remove(choice);
+            priorityList.add(choice);
         }
-        choice.setNumberOfToys(choice.getNumberOfToys() - 1);
-        setFrequences(this.getTotal() - 1);
-        return choice;
+        return result;
     }
     public int getTotal() {
         return total;
@@ -76,11 +70,12 @@ public class ToyList<E extends ToyItem> implements Serializable, Iterable<E>{
         return null;
     }
     public void deleteToy(int id) {
+        toyList.removeIf(toy -> toy.getId() == id);
+        int newTotal = 0;
         for (E toy : toyList) {
-            if (toy.getId() == id) {
-                toyList.remove(toy);
-            }
+            newTotal += toy.getNumberOfToys();
         }
+        setFrequences(newTotal);
     }
 
     public String getInfo() {

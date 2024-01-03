@@ -128,7 +128,9 @@ public class ConsoleUI implements View {
     }
 
     public void getInfo() {
-        presenter.getInfo();
+        if (!presenter.getInfo()) {
+            System.out.println("Список пуст! Добавьте игрушки в файл.");
+        }
     }
 
     public void load() {

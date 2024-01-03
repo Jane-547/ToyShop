@@ -40,10 +40,6 @@ public class Toy implements Serializable, ToyItem {
         this.id = id;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public void setNumberOfToys(int numberOfToys) {
         this.numberOfToys = numberOfToys;
     }
